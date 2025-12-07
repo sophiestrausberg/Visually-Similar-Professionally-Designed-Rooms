@@ -23,6 +23,9 @@ My project uses two CNNS. The first is a CNN trained on the Houzz interior desig
 
 The model uses MobileNetV2 as a base architecture (pretrained on ImageNet) with the last 20 layers unfrozen for fine-tuning. On top of the base model, I add global average pooling, dropout (0.3) for regularization, and a dense softmax output layer equal to the number of style classes. The model is trained for 15 epochs using the Adam optimizer (learning rate = 1e-4) and categorical cross-entropy loss, with both training and validation performance monitored. Because the dataset is moderately imbalanced across styles, I compute class weights proportional to inverse class frequency to reduce bias toward dominant categories. After training, the Style CNN achieved a 46.71% validation accuracy and 1.51 validation loss. Class-wise performance showed strongest F1 scores for modern_contemporary (0.59) and eclectic_other (0.46), and confusion was most common between visually similar categories such as modern_contemporary and industrial.
 
+<img width="989" height="490" alt="room_style_classification" src="https://github.com/user-attachments/assets/122178bb-d430-4228-ab1f-d24ad2532b17" />
+
+
 
 The second network is a pretrained ResNet50-Places365 model, trained on over 8 million scene images across 365 categories types of indoor and outdoor spaces. Although I initially considered training a smaller MobileNetV2-based CNN for room type classification, the pretrained ResNet50-Places365 model proved substantially more effective. When evaluated on my six-category validation subset (bedroom, kitchen, bathroom, living room, dining room, and home office) created by auto-labelling the Houzz data using CLIP, the model achieved a 67.09% overall accuracy and a validation loss of 0.87.
 
@@ -42,39 +45,45 @@ To identify the most visually similar professionally designed rooms, the system 
 
 To determine how well my model truly captures stylistic similarities between rooms, I created a color histogram similarity baseline. Each image is represented by a 3D RGB histogram with parameters bins=(8, 8, 8), which divides each color channel (Red, Green, Blue) into 8 ranges, resulting in 512 total features (8×8×8). The histogram is normalized so that images of different sizes remain comparable. I extract color histograms for every image in the Houzz dataset and compare the cosine similarity of each histogram against the query image, returning the top 5. This model outputs the most visually similar professionally designed rooms based on color alone.
 
+
+
+
 **Bedroom from testing data**
 
 Room Type Filering + Style Cosine Similarity:
-<img width="1489" height="274" alt="model_output_7" src="https://github.com/user-attachments/assets/9f24c25e-f428-4228-9141-f11f9121f9c8" />
+<img width="1182" height="208" alt="model_output_4" src="https://github.com/user-attachments/assets/cb706b57-809f-4284-80d1-cab8005793c2" />
 
 Color histogram:
-<img width="1489" height="274" alt="model_output_8" src="https://github.com/user-attachments/assets/26be07b5-0467-4ef6-bfed-8b804d5251d2" />
+<img width="1182" height="208" alt="model_output_8" src="https://github.com/user-attachments/assets/a2c28875-aca1-4098-8334-4bd0a6ab169b" />
+
 
 
 **Bathroom from testing data**
 
 Room Type Filering + Style Cosine Similarity:
+<img width="1182" height="208" alt="model_output_3" src="https://github.com/user-attachments/assets/f8e8e46a-f902-488c-99d4-d8d8b1024582" />
 
 Color histogram:
+<img width="1182" height="208" alt="model_output_7" src="https://github.com/user-attachments/assets/48e8c5af-2598-4a5d-9fbc-faa365e14dab" />
 
 
 
 **My bedroom**
 
 Room Type Filering + Style Cosine Similarity:
-<img width="1489" height="274" alt="model_output_1" src="https://github.com/user-attachments/assets/9f16319b-1c4e-41a4-b5b9-774f8ec18d41" />
+<img width="1182" height="208" alt="model_output_1" src="https://github.com/user-attachments/assets/b7a75035-480d-4216-b8cd-47978ae4da7f" />
 
 Color histogram:
-<img width="1489" height="274" alt="model_output_2" src="https://github.com/user-attachments/assets/a57babdd-8a53-4293-95b5-2b69772dd02c" />
+<img width="1182" height="208" alt="model_output_5" src="https://github.com/user-attachments/assets/f77f3938-d200-48a0-9e3a-668ecb558c12" />
 
 
 **My bathroom**
 
 Room Type Filering + Style Cosine Similarity:
-<img width="1489" height="352" alt="model_output_3" src="https://github.com/user-attachments/assets/8fcdbe6b-b719-4a96-b47a-b7d4a0fbb15e" />
+<img width="1182" height="263" alt="model_output_2" src="https://github.com/user-attachments/assets/7d8baac5-99f3-4fd6-af79-c57dbecdb1c8" />
 
 Color histogram:
-<img width="1489" height="352" alt="model_output_5" src="https://github.com/user-attachments/assets/5cee4734-13d5-477a-a7bf-93adbad5bf31" />
+<img width="1182" height="263" alt="model_output_6" src="https://github.com/user-attachments/assets/9842d31d-02e8-4f1f-918d-3d66ea79df27" />
 
 
 
