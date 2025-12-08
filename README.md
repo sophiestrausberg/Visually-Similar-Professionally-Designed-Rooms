@@ -23,8 +23,11 @@ My project uses two CNNS. The first is a CNN trained on the Houzz interior desig
 
 The model uses MobileNetV2 as a base architecture (pretrained on ImageNet) with the last 20 layers unfrozen for fine-tuning. On top of the base model, I add global average pooling, dropout (0.3) for regularization, and a dense softmax output layer equal to the number of style classes. The model is trained for 15 epochs using the Adam optimizer (learning rate = 1e-4) and categorical cross-entropy loss, with both training and validation performance monitored. Because the dataset is moderately imbalanced across styles, I compute class weights proportional to inverse class frequency to reduce bias toward dominant categories. After training, the Style CNN achieved a 49.32% validation accuracy and 1.42 validation loss. Class-wise performance showed strongest F1 scores for modern_contemporary (0.59) and eclectic_other (0.46), and confusion was most common between visually similar categories such as modern_contemporary and industrial.
 
+<figure>
 <img width="989" height="490" alt="room_style_classification" src="https://github.com/user-attachments/assets/122178bb-d430-4228-ab1f-d24ad2532b17" />
-
+<figcaption align="center"><i>The evaluation uses predictions from the model trained on data/dataset_test_merged and visualized using Matplotlib.</i></figcaption>
+</figure>
+<br><br> 
 
 
 The second network is a pretrained ResNet50-Places365 model, trained on over 8 million scene images across 365 categories types of indoor and outdoor spaces. Although I initially considered training a smaller MobileNetV2-based CNN for room type classification, the pretrained ResNet50-Places365 model proved substantially more effective. When evaluated on my six-category validation subset (bedroom, kitchen, bathroom, living room, dining room, and home office) created by auto-labelling the Houzz data using CLIP, the model achieved a 80.61% overall accuracy and a validation loss of 0.58.
@@ -32,8 +35,11 @@ The second network is a pretrained ResNet50-Places365 model, trained on over 8 m
 
 To identify the most visually similar professionally designed rooms, the system first runs the pretrained room-type CNN on all images in the Houzz dataset and stores their predicted categories. The Style CNN is then modified by removing its final softmax classification layer, so instead of a classification label it outputs a feature vector. When a user provides a query image, it is first classified by the room-type CNN to ensure comparisons are made only within the same room category. The query image and all matching dataset images are then passed through the Style CNN to generate their embeddings. Finally, the system computes cosine similarity between the query’s style embedding and each candidate’s embedding, ranking results by similarity and returning the top five most visually similar professionally designed interiors.
 
+<figure>
 <img width="960" height="720" alt="query_photo_flow" src="https://github.com/user-attachments/assets/8d496db9-78ea-4916-9201-255c418b3e7a" />
-
+<figcaption align="center"><i>Created via Google Drawings</i></figcaption>
+</figure>
+<br><br> 
 
 
 
@@ -43,6 +49,12 @@ To identify the most visually similar professionally designed rooms, the system 
 To determine how well my model truly captures stylistic similarities between rooms, I created a color histogram similarity baseline. Each image is represented by a 3D RGB histogram with parameters bins=(8, 8, 8), which divides each color channel (Red, Green, Blue) into 8 ranges, resulting in 512 total features (8×8×8). The histogram is normalized so that images of different sizes remain comparable. I extract color histograms for every image in the Houzz dataset and compare the cosine similarity of each histogram against the query image, returning the top 5. This model outputs the most visually similar professionally designed rooms based on color alone.
 
 
+**Room Type Filering + Style Cosine Similarity:**
+<i>Query images from the blog_figures folder were passed through the Room Type and Style CNNs, cosine similarity was computed on the relevant embeddings, and the top results were visualized using Matplotlib. See code source here.</i>
+
+**Color histogram:**
+<i>Query images from the blog_figures folder were compared to dataset images using RGB color histograms, ranked by correlation similarity, and the top results were visualized using Matplotlib. See code source here.</i>
+<br><br> 
 
 
 **Bedroom from testing data**
