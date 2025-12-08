@@ -14,10 +14,10 @@ Have you ever struggled to decorate an apartment, dorm, or bedroom? Interior dec
 
 This project investigates whether neural networks can learn the visual structure and stylistic attributes of interior spaces and use that understanding to recommend visually similar professionally designed rooms. By training models to recognize room type and décor style and by generating robust image embeddings, this project aims to create an open-source tool that provides personalized design inspiration based on a user’s photograph, providing inspiration for budget-friendly designs one can achieve with items similar to those they already own and within their preferred decor style.
 
-Convolutional networks are a type of neural network that use convolution in place of general matrix multiplication in at least one of their layers. This makes them good for working with data that has a grid-like topology, such as images, since they preserve spatial structure and allow for a much smaller parameter count. CNNs efficiently recognize local patterns in images and recognize them well across photos the model did not see during training. 
-
 
 ## Methodology & Data
+
+Convolutional networks are a type of neural network that use convolution in place of general matrix multiplication in at least one of their layers. This makes them good for working with data that has a grid-like topology, such as images, since they preserve spatial structure and allow for a much smaller parameter count.
 
 My project uses two CNNS. The first is a CNN trained on the Houzz interior design dataset, containing over 18,000 professional room photos labeled by design style (e.g., modern, rustic, industrial, etc.). Each image is resized to 224×224 pixels and its pixel values normalized to the range [0, 1]. During training, I apply data augmentation, including random rotations (±20°), horizontal flips, zooms, translations, and brightness adjustments, to increase robustness and prevent overfitting. To reduce confusion between visually similar design styles, I merged the 19 original style classes into 6.
 
