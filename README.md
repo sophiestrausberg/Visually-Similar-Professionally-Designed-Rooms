@@ -50,10 +50,10 @@ To determine how well my model truly captures stylistic similarities between roo
 
 
 **Room Type Filering + Style Cosine Similarity:**
-<i>Query images from the blog_figures folder were passed through the Room Type and Style CNNs, cosine similarity was computed on the relevant embeddings, and the top results were visualized using Matplotlib. See code source here.</i>
+<i>Query images from the blog_figures folder were passed through the Room Type and Style CNNs, cosine similarity was computed on the relevant embeddings, and the top results were visualized using Matplotlib.</i>
 
 **Color histogram:**
-<i>Query images from the blog_figures folder were compared to dataset images using RGB color histograms, ranked by correlation similarity, and the top results were visualized using Matplotlib. See code source here.</i>
+<i>Query images from the blog_figures folder were compared to dataset images using RGB color histograms, ranked by correlation similarity, and the top results were visualized using Matplotlib.</i>
 <br><br> 
 
 
